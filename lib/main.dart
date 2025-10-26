@@ -69,9 +69,16 @@ final GlobalKey _projectsKey = GlobalKey();
 final GlobalKey _experienceKey = GlobalKey();
 final GlobalKey _certificationsKey = GlobalKey();
 
-class PortfolioHomePage extends StatelessWidget {
+String activeSection = 'HOME';
+
+class PortfolioHomePage extends StatefulWidget {
   const PortfolioHomePage({super.key});
 
+  @override
+  State<PortfolioHomePage> createState() => _PortfolioHomePageState();
+}
+
+class _PortfolioHomePageState extends State<PortfolioHomePage> {
   @override
   Widget build(BuildContext context) {
     // Determine screen size for responsiveness (basic)
@@ -88,7 +95,14 @@ class PortfolioHomePage extends StatelessWidget {
     };
 
     return Scaffold(
-      endDrawer: const MobileDrawer(sectionKeys: {},),
+      endDrawer: MobileDrawer(
+        sectionKeys: sectionKeys,
+        onSectionClicked: (sectionKey) {
+          setState(() {
+            activeSection = sectionKey; // Update active section
+          });
+        },
+      ),
       body: Column(
         children: [
           Navbar(sectionKeys: sectionKeys),
@@ -394,12 +408,37 @@ class NavLink extends StatelessWidget {
 
 class MobileDrawer extends StatelessWidget {
   final Map<String, GlobalKey> sectionKeys;
-  const MobileDrawer({super.key, required this.sectionKeys});
+  final Function(String) onSectionClicked; // Correct type
+
+  const MobileDrawer({
+    super.key,
+    required this.sectionKeys,
+    required this.onSectionClicked,
+  });
+
+  void _scrollToSection(BuildContext context, String sectionKey) {
+    final targetKey = sectionKeys[sectionKey];
+    if (targetKey?.currentContext != null) {
+      Scrollable.ensureVisible(
+        targetKey!.currentContext!,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+        alignment: 0.0,
+      );
+    }
+    onSectionClicked(sectionKey); // Notify parent
+    Navigator.pop(context); // Close drawer
+  }
+
+  // Convert keys like 'HOME' to 'Home' for display
+  String _formatSectionName(String key) {
+    return key[0].toUpperCase() + key.substring(1).toLowerCase();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: const Color(0xFF1A1A1A), // Slightly lighter dark background
+      backgroundColor: const Color(0xFF1A1A1A),
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
@@ -414,13 +453,18 @@ class MobileDrawer extends StatelessWidget {
               ),
             ),
           ),
-          // Use the sectionKeys map to populate NavLinks
+          // Generate drawer items dynamically
           ...sectionKeys.entries.map((entry) {
-            return NavLink(
-              text: entry.key,
-              isDrawerItem: true,
-              targetKey: entry.value,
-              isActive: entry.key == 'HOME', // Optionally keep 'HOME' active
+            return ListTile(
+              title: Text(
+                _formatSectionName(entry.key),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onTap: () => _scrollToSection(context, entry.key),
             );
           }).toList(),
         ],
