@@ -1823,7 +1823,7 @@ class EducationSection extends StatelessWidget {
       institution: 'SAL Institute of Technology and Engineering Research (GTU)',
       duration: 'Aug 2023 - Present',
       location: 'Ahmedabad, Gujarat, India',
-      gradeOrPercentage: '9.5/10 CGPA',
+      gradeOrPercentage: '7.33/10 CGPA',
     ),
     // Added a third university entry to the data
     EducationData(
@@ -1837,7 +1837,7 @@ class EducationSection extends StatelessWidget {
       degree: 'SSC 10th',
       institution: 'Shri S.N. Vidhyalaya (GSEB)',
       duration: 'April 2019 - May 2020',
-      gradeOrPercentage: '9.5/10 CGPA',
+      gradeOrPercentage: '71.66 %',
       location: 'Surendranagar, Gujarat, India',
     ),
   ];
