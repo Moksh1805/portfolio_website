@@ -200,8 +200,8 @@ class _NavbarState extends State<Navbar> {
                 NavLink(text: 'HOME',  targetKey: widget.sectionKeys['HOME'],
                   isActive: activeSection == 'Home',
                   onSectionClicked: () {
-                    setState(() => activeSection = 'Home');
-                  },),
+                  setState(() => activeSection = 'Home');
+                },),
 
                 NavLink(text: 'EXPERIENCE', targetKey: widget.sectionKeys['EXPERIENCE'],
                   isActive: activeSection == 'Experience',
@@ -934,7 +934,7 @@ class ExperienceSection extends StatelessWidget {
         responsibilities: const [
           'Built and optimized Android applications using Kotlin, contributing to front-end design, debugging, and performance tuning.',
           'Collaborated remotely with cross-functional teams, applying version control (Git) and agile methodologies for efficient task management.'
-              'Delivered project components on time while ensuring code quality, maintainability, and adherence to industry standards.',
+          'Delivered project components on time while ensuring code quality, maintainability, and adherence to industry standards.',
           'Contributed to a production-ready application currently published and available on the Google Play Store.'
         ],
       ),
